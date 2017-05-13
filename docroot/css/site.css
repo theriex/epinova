@@ -15,9 +15,9 @@ body {
   line-height:1.8;
 }
 
-A:link {text-decoration:none; color:#004052; }
-A:visited {text-decoration:none; color:#004052; }
-A:active {text-decoration:none; color:#004052; }
+A:link {text-decoration:none; color:#008688; }
+A:visited {text-decoration:none; color:#008688; }
+A:active {text-decoration:none; color:#008688; }
 A:hover {text-decoration:underline; color:#00989a; }
 
 #contentdiv { 
@@ -34,11 +34,12 @@ A:hover {text-decoration:underline; color:#00989a; }
 #logodiv { float:left; padding-right:5px; }
 #logoimg { width:80px; height:80px; }
 #titlediv { font-size:xx-large; font-weight:bold; }
-#contseldiv { font-size:large; font-weight:bold; }
 #descripdiv { clear:both; font-size:medium; padding:5px; 
   background-image: url('../img/wt30p.png'); }
+#contseldiv { font-size:large; font-weight:bold; }
 #headtextdiv { display:table-cell; }
 #devdiv { padding-left:20px; text-align:right; font-size:x-large; }
+#biznamediv { padding-left:20px; font-size:small; }
 .pointsul { list-style:square; list-style-image: url('../img/bluebull.png');
   margin:0px; }
 .pointsul li { padding:5px; }
