@@ -158,7 +158,7 @@ var app = {},
                            onclick: jt.fs("app.selectContent('capdiv')")},
                      "About"],
                      sep,
-                    "Tech&nbsp;News"]; }
+                    "Reading"]; }
         else if(divid === "capdiv") {
             jt.byId("newsdiv").style.display = "none";
             jt.byId("capdiv").style.display = "block";
@@ -166,7 +166,7 @@ var app = {},
                     sep,
                     ["a", {href: "#epnewtech",
                            onclick: jt.fs("app.selectContent('newsdiv')")},
-                     "Tech&nbsp;News"]]; }
+                     "Reading"]]; }
         jt.out("contseldiv", jt.tac2html(html));
     };
 
