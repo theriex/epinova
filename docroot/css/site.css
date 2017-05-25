@@ -23,7 +23,7 @@ A:hover {text-decoration:underline; color:#00989a; }
 #contentdiv { 
   position:relative;
   background-image: url('../img/contbg.png'); 
-  width:90%; height:90%; min-height:85vh;
+  width:90%; height:90%; min-height:80vh;
   margin:3% 4% 7% 3%; 
   padding:10px; border-radius:5px;
   /* border:1px solid #080036; */
@@ -50,10 +50,10 @@ A:hover {text-decoration:underline; color:#00989a; }
 .morelink { font-size:small; background-image: url('../img/wt30p.png'); }
 #actinformdiv { font-style:italic; font-size:small; }
 
-#contactdiv { text-align:center; padding-top:10px; min-height:30px;
+#contactdiv { text-align:center; padding-top:10px; min-height:35px;
   padding-right:20px;
   overflow:scroll;
-  position:absolute; left:0px; bottom:0px; height:30px; width:90%;
+  position:absolute; left:0px; bottom:0px; height:35px; width:90%;
  }
 .dcrspan { padding:0px 5px; vertical-align:middle; }
 .refimg { max-height:20px; max-width:20px; }
