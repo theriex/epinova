@@ -132,9 +132,9 @@ var app = {},
 
     function shouldOpenInNewTab (link) {
         var nt, matches,
-            lms = ["#", "https://membic.org", "https://membic.org",
-                   "https://www.membic.org", "https://www.membic.org",
-                   "http://localhost", "mailto"];
+            lms = ["#", "https://epinova.com", "https://www.membic.org",
+                   "http://epinova.com", "http://www.epinova.com",
+                   "mailto"];
         if(link.className.indexOf("externaldocslink") >= 0) {
             nt = true; }
         if(!nt) {
