@@ -1,4 +1,4 @@
-/*global jtminjsDecorateWithUtilities, document, setTimeout */
+/*global jtminjsDecorateWithUtilities, document, setTimeout, window */
 /*jslint browser, multivar, white, fudge, for */
 
 var app = {},
@@ -130,6 +130,32 @@ var app = {},
     }
 
 
+    function shouldOpenInNewTab (link) {
+        var nt, matches,
+            lms = ["#", "https://membic.org", "https://membic.org",
+                   "https://www.membic.org", "https://www.membic.org",
+                   "http://localhost", "mailto"];
+        if(link.className.indexOf("externaldocslink") >= 0) {
+            nt = true; }
+        if(!nt) {
+            matches = lms.filter(function (substr) {
+                if(link.href.indexOf(substr) >= 0) {
+                    return substr; } });
+            nt = !(matches && matches.length); }
+        return nt;
+    }
+
+
+    function convertExternalLinks () {
+        var links, i, link;
+        links = document.getElementsByTagName("a");
+        for(i = 0; i < links.length; i += 1) {
+            link = links[i];
+            if(shouldOpenInNewTab(link)) {
+                jt.on(link, "click", app.externalLinkClick); } }
+    }
+
+
     ////////////////////////////////////////
     // application level functions
     ////////////////////////////////////////
@@ -148,7 +174,7 @@ var app = {},
 
 
     app.selectContent = function (divid) {
-        var height, html, sep;
+        var html, sep;
         sep = "&nbsp;&nbsp;&nbsp;&nbsp;";
         sep = sep + "|" + sep;
         if(divid === "newsdiv") {
@@ -171,10 +197,20 @@ var app = {},
     };
 
 
+    app.externalLinkClick = function (event) {
+        var src;
+        jt.evtend(event);
+        src = event.target || event.srcElement;
+        if(src) {
+            window.open(src.href); }
+    };
+
+
     app.init = function () {
         jtminjsDecorateWithUtilities(jt);
         addExpansionLinks();
         addFontSupport();
+        convertExternalLinks();
         app.selectContent("capdiv");
         displayContactInfo();
     };
