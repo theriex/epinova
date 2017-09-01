@@ -39,7 +39,7 @@ A:hover {text-decoration:underline; color:#00989a; }
 #contseldiv { font-size:large; font-weight:bold; }
 #headtextdiv { display:table-cell; }
 #devdiv { padding-left:20px; text-align:right; font-size:x-large; }
-#biznamediv { padding-left:20px; font-size:small; }
+#biznamediv { padding-left:20px; font-size:large; }
 .pointsul { list-style:square; list-style-image: url('../img/bluebull.png');
   margin:0px; }
 .pointsul li { padding:5px; }
@@ -50,10 +50,6 @@ A:hover {text-decoration:underline; color:#00989a; }
 .morelink { font-size:small; background-image: url('../img/wt30p.png'); }
 #actinformdiv { font-style:italic; font-size:small; }
 
-#contactdiv { text-align:center; padding-top:10px; min-height:35px;
-  padding-right:20px;
-  overflow:scroll;
-  position:absolute; left:0px; bottom:0px; height:35px; width:90%;
- }
 .dcrspan { padding:0px 5px; vertical-align:middle; }
+#dcorgspan { font-size:medium; }
 .refimg { max-height:20px; max-width:20px; }

@@ -28,13 +28,18 @@ var app = {},
 
 
     function typeContactInfo () {
-        var ref;
+        var ref, subt;
         if(typing.refidx < typing.refs.length) {
             ref = typing.refs[typing.refidx];
             if(ref.text) {
                 if(typing.charidx < ref.text.length) {
-                    displayContactLink(ref.text.slice(0, typing.charidx));
-                    typing.charidx += 1; }
+                    if(ref.text.indexOf("&nbsp;") === typing.charidx) {
+                        subt = ref.text.slice(0, typing.charidx + 5);
+                        typing.charidx += 5; }
+                    else {
+                        subt = ref.text.slice(0, typing.charidx);
+                        typing.charidx += 1; }
+                    displayContactLink(subt); }
                 else {
                     displayContactLink(ref.text);
                     typing.refidx += 1;
@@ -64,17 +69,18 @@ var app = {},
                 {text: " "},  //space breaker
                 {text: telno,
                  href: "tel:" + telno},
-                {imgsrc: inico,
-                 href: inref,
-                 onclick: jt.fs("window.open('" + inref + "')")},
+                {text: " "},  //space breaker
                 {imgsrc: gitico,
                  href: gitref,
                  onclick: jt.fs("window.open('" + gitref + "')")},
-                {text: " "}]; //space breaker
+                {text: " "},  //space breaker
+                {imgsrc: inico,
+                 href: inref,
+                 onclick: jt.fs("window.open('" + inref + "')")},
+                {text: " "},  //space breaker
+                {text: "Boston,&nbsp;Massachusetts"}];
         refs.forEach(function (ignore /*ref*/, index) {
             html.push(["span", {id: "dcrspan" + index, cla: "dcrspan"}]); });
-        html.push(["span", {id: "dcorgspan"},
-                   jt.byId("contactdiv").innerHTML]);
         jt.out("contactdiv", jt.tac2html(html));
         typing.refs = refs;
         setTimeout(typeContactInfo, 100);
