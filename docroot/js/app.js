@@ -28,18 +28,21 @@ var app = {},
 
 
     function typeContactInfo () {
-        var ref, subt;
+        var ref, sub, ecs = ["&nbsp;", "&#8209;"], isesc = false, idx;
         if(typing.refidx < typing.refs.length) {
             ref = typing.refs[typing.refidx];
             if(ref.text) {
-                if(typing.charidx < ref.text.length) {
-                    if(ref.text.indexOf("&nbsp;") === typing.charidx) {
-                        subt = ref.text.slice(0, typing.charidx + 5);
-                        typing.charidx += 5; }
-                    else {
-                        subt = ref.text.slice(0, typing.charidx);
+                idx = typing.charidx;  //shorthand
+                if(idx < ref.text.length) {
+                    ecs.forEach(function (es) {
+                        if(ref.text.indexOf(es, idx) === idx) {
+                            sub = ref.text.slice(0, idx + es.length);
+                            typing.charidx += es.length;
+                            isesc = true; } });
+                    if(!isesc) {
+                        sub = ref.text.slice(0, idx);
                         typing.charidx += 1; }
-                    displayContactLink(subt); }
+                    displayContactLink(sub); }
                 else {
                     displayContactLink(ref.text);
                     typing.refidx += 1;
@@ -62,7 +65,7 @@ var app = {},
             gitico = "https://github.com/favicon.ico",
             refs, html = [];
         emaddr = emaddr.replace(/EMSEP/g, "@");
-        telno = telno.replace(/TELSEP/g, "-");
+        telno = telno.replace(/TELSEP/g, "&#8209;");
         refs = [{text: "Contact:"},
                 {text: emaddr,
                  href: "mailto:" + emaddr},

@@ -23,7 +23,7 @@ A:hover {text-decoration:underline; color:#00989a; }
 #contentdiv { 
   position:relative;
   background-image: url('../img/contbg.png'); 
-  width:90%; height:90%; min-height:80vh;
+  width:90%; height:90%; min-height:80vh; min-width:300px;
   margin:3% 4% 7% 3%; 
   padding:10px; border-radius:5px;
   /* border:1px solid #080036; */
@@ -53,3 +53,5 @@ A:hover {text-decoration:underline; color:#00989a; }
 .dcrspan { padding:0px 5px; vertical-align:middle; }
 #dcorgspan { font-size:medium; }
 .refimg { max-height:20px; max-width:20px; }
+
+#newsdiv { margin-left:-12px; }
