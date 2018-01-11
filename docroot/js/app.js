@@ -53,6 +53,16 @@ var app = {},
                 typing.refidx += 1;
                 typing.charidx = 0; }
             setTimeout(typeContactInfo, 100); }
+        //redrawing the img doesn't cause the broken image to reload.  Caching
+        //locally instead.
+        // else {  //last call
+        //     //redisplay images since the linkedin is particularly laggy and
+        //     //can show up broken
+        //     typing.refs.forEach(function (r, i) {
+        //         if(r.imgsrc) {
+        //             typing.refidx = i;
+        //             displayContactLink(jt.tac2html(
+        //                 ["img", {src: r.imgsrc, cla: "refimg"}])); } }); }
     }
 
 
@@ -60,7 +70,10 @@ var app = {},
         var emaddr = "ericEMSEPepinova.com",
             telno = "617TELSEP721TELSEP4350",
             inref = "https://www.linkedin.com/in/eparker",
-            inico = "https://www.linkedin.com/favicon.ico",
+            //inico = "https://www.linkedin.com/favicon.ico",
+            //caching icon locally due to image loading issues on slower
+            //connections.  Not in repository, refetch if needed.
+            inico = "img/in.ico",
             gitref = "https://github.com/theriex",
             gitico = "https://github.com/favicon.ico",
             refs, html = [];
