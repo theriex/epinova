@@ -178,6 +178,13 @@ var app = {},
     }
 
 
+    function adjustNewsHeight () {
+        var h = jt.byId("contentdiv").offsetHeight;
+        h -= jt.byId("logodiv").offsetHeight;
+        jt.byId("newsdiv").style.height = String(h) + "px";
+    }
+
+
     ////////////////////////////////////////
     // application level functions
     ////////////////////////////////////////
@@ -235,6 +242,7 @@ var app = {},
         convertExternalLinks();
         app.selectContent("capdiv");
         displayContactInfo();
+        adjustNewsHeight();
     };
 
 } () );
