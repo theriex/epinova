@@ -49,8 +49,11 @@ A:hover {text-decoration:underline; color:#00989a; }
       background-image: url('../img/wt30p.png'); }
 .morelink { font-size:small; background-image: url('../img/wt30p.png'); }
 #actinformdiv { font-style:italic; font-size:small; }
+#actinformdiv p { margin:5px 0px; }
+#actinformdiv p a { line-height:2.5em; }
 
 .dcrspan { padding:0px 5px; vertical-align:middle; }
+.dcrspan a { line-height:2.2em; }
 #dcorgspan { font-size:medium; }
 .refimg { max-height:20px; max-width:20px; }
 
