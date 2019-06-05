@@ -18,6 +18,14 @@ var app = {},
     // local helper functions
     ////////////////////////////////////////
 
+    function displayResumeLink () {
+        jt.out("reslinkdiv", jt.tac2html(
+            ["a", {href:"ep.html",
+                   onclick:jt.fs("window.open('ep.html')")},
+              "view resume"]));
+    }
+
+
     function displayContactLink (disp) {
         var ref = typing.refs[typing.refidx];
         if(ref.href) {
@@ -53,6 +61,8 @@ var app = {},
                 typing.refidx += 1;
                 typing.charidx = 0; }
             setTimeout(typeContactInfo, 100); }
+        else {
+            displayResumeLink(); }
         //redrawing the img doesn't cause the broken image to reload.  Caching
         //locally instead.
         // else {  //last call
@@ -203,25 +213,24 @@ var app = {},
 
 
     app.selectContent = function (divid) {
-        var html, sep;
-        sep = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        var pgs = [{divid:"capdiv", name:"About"},
+                   {divid:"newsdiv", name:"Reading"},
+                   {divid:"biodiv", name:"Bio"}];
+        var sep = "&nbsp;&nbsp;&nbsp;&nbsp;";
         sep = sep + "|" + sep;
-        if(divid === "newsdiv") {
-            jt.byId("newsdiv").style.display = "block";
-            jt.byId("capdiv").style.display = "none";
-            html = [["a", {href: "#capabilities",
-                           onclick: jt.fs("app.selectContent('capdiv')")},
-                     "About"],
-                     sep,
-                    "Reading"]; }
-        else if(divid === "capdiv") {
-            jt.byId("newsdiv").style.display = "none";
-            jt.byId("capdiv").style.display = "block";
-            html = ["About",
-                    sep,
-                    ["a", {href: "#epnewtech",
-                           onclick: jt.fs("app.selectContent('newsdiv')")},
-                     "Reading"]]; }
+        var html = [];
+        pgs.forEach(function (pg, idx) {
+            if(pg.divid !== divid) {
+                jt.byId(pg.divid).style.display = "none";
+                html.push(["a", {href:"#" + pg.name,
+                                 onclick:jt.fs("app.selectContent('" + 
+                                               pg.divid + "')")},
+                           pg.name]); }
+            else {
+                jt.byId(pg.divid).style.display = "block";
+                html.push(pg.name); }
+            if(idx < pgs.length - 1) {
+                html.push(sep); } });
         jt.out("contseldiv", jt.tac2html(html));
     };
 
