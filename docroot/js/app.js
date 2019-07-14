@@ -249,7 +249,11 @@ var app = {},
         addExpansionLinks();
         addFontSupport();
         convertExternalLinks();
-        app.selectContent("capdiv");
+        var params = jt.parseParams();
+        if(params.view === "news") {
+            app.selectContent("newsdiv"); }
+        else {
+            app.selectContent("capdiv"); }
         displayContactInfo();
         adjustNewsHeight();
     };
