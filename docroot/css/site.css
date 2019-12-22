@@ -59,7 +59,7 @@ A:hover {text-decoration:underline; color:#00989a; }
 .dcrspan { padding:0px 5px; vertical-align:middle; }
 .dcrspan a { line-height:2.2em; }
 #dcorgspan { font-size:medium; }
-.refimg { max-height:20px; max-width:20px; }
+.refimg { max-height:20px; max-width:20px; vertical-align:middle; }
 
 #newsdiv { margin-left:-12px; }
 #biopic { float:left; max-width:180px; margin-right:10px; }

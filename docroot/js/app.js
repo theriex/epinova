@@ -84,6 +84,8 @@ var app = {},
             //caching icon locally due to image loading issues on slower
             //connections.  Not in repository, refetch if needed.
             inico = "img/in.ico",
+            twref = "https://twitter.com/theriex",
+            twico = "img/twico.png",
             gitref = "https://github.com/theriex",
             gitico = "https://github.com/favicon.ico",
             refs, html = [];
@@ -103,6 +105,10 @@ var app = {},
                 {imgsrc: inico,
                  href: inref,
                  onclick: jt.fs("window.open('" + inref + "')")},
+                {text: " "},  //space breaker
+                {imgsrc: twico,
+                 href: twref,
+                 onclick: jt.fs("window.open('" + twref + "')")},
                 {text: " "},  //space breaker
                 {text: "Boston,&nbsp;Massachusetts"}];
         refs.forEach(function (ignore /*ref*/, index) {
