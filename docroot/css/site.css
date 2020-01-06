@@ -50,10 +50,12 @@ A:hover {text-decoration:underline; color:#00989a; }
 .morelink { font-size:small; background-image: url('../img/wt30p.png'); }
 #actinformdiv { font-style:italic; font-size:medium; }
 #actinformdiv p { margin:5px 0px; }
-#actinformdiv p a { line-height:2.5em; }
+#actinformdiv p a { line-height:2.5em; padding-left:2px; }
+#actinformdiv p a img { max-height:1em; vertical-align:middle; 
+  padding-right:1px; }
 #actinformdiv button { border: 2px solid #007274; border-radius:10px; 
   cursor:pointer; background:#c0f1f2; box-shadow:1px 1px 1px #2f2b00;
-  font-size:medium; font-weight:bold; margin-left:20px; }
+  font-size:x-small; font-weight:bold; margin-left:20px; }
 
 
 .dcrspan { padding:0px 5px; vertical-align:middle; }
