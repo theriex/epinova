@@ -1,0 +1,94 @@
+<!-- Porting Data from Google App Engine -->
+
+Facing significant changes porting from Python 2.7 to 3.7, the time has come to move the membic project off Google App Engine.  It might move back to GAE later, but it needs a clean port first, as the updates to persistent storage and caching are too significant to do incrementally on the running system.  Fortunately, BigTable is the least featured database system I've ever used, so it should be possible to move from there to pretty much anything.
+
+
+<h2>Exfiltrating My Data</h2>
+
+Yet another reason to appreciate a REST architecture: being able to pull data out of a system that can no longer be modified.  But the REST API doesn't include sensitive user data, so to kick things off that had to be scraped from the database access console.  Since there weren't a crazy number of users, the fastest approach was to page through with a tedious copy-paste into a big file.  Then some emacs replacement and macro operations to normalize into tab delimited format.
+
+Armed with a uids.tdf file, the next step was to write a node.js program to walk the user data entries and make supporting membic API calls fetching all public information into separate json and image files.  I loaded each object into a separate JSON file organized into subdirectories by object type.  Associated image files were put in subdirectories off the object dirs.  Even with everything separated, the async nature of node made progress hard to follow and things tended to stack up, so I added some sequencing to make it easier to follow.  Probably took slightly longer, but it felt better watching the log file progress.  I was worried about blowing access quotas for the day, but the App Engine server side caching (no longer available for free) meant I got through the whole data pull with no issues.
+
+With all the data eventually pulled down to my development box, the next step was to port to the latest python version, and a new data store.
+
+
+<h2>The Migration Platform</h2>
+
+When I first migrated to App Engine, I switched from Java to Python, which turned out to be substantially more effective in terms of getting things done.  Switching to WSGI and 3.7 will be an improvement.  For data storage and retrieval, any reasonable database should be adequate in the near to medium term.  My primary application hosting requirement is that the environment should take care of things like security monitoring, data backup, and general service patching.
+
+After weighing other large service providers, a more traditional hosting plan with a flat monthly rate for service within specified levels was the best match.  I've used Dreamhost for many years, and they offer Python with MySQL.  I have a preference for Postgres, but I was pleased to learn MySQL has improved a lot over the years.
+
+Aside from actually migrating the app, a major goal in this process is to absolutely minimize CRUD related code dependencies.  Preferably without introducing another technology that itself creates impediments to future migration.  I want to be able to handle my needs declaratively, with effects extending consistently from client side JavaScript, through server API calls, over to the data store, and back.
+
+What that means is that after several years off, I'm back writing code that writes code.  This time using JavaScript.
+
+
+<h2>Generating CRUD Support</h2>
+
+Declaring CRUD support starts with field description definitions.  Here's the descriptors that I wanted to work with:
+
+<pre>
+var fieldDescriptors = [
+    {dn:"priv[ate]", h:"authorized access only e.g. owner personal info"},
+    {dn:"adm[in]", h:"administrative access only e.g. activation codes"},
+    {dn:"req[uired]", h:"Save error if null or empty"},
+    {dn:"uniq[ue]", h:"Indexed. Save err if matches another's value"},
+    {dn:"str[ing]", h:"Rough max 128 char text, truncation ok.", aliases:[
+        {dn:"email", h:"email address format"},
+        {dn:"isod[ate]", h:"ISO date format"},
+        {dn:"isomod", h:"ISO date;int count"}]},
+    {dn:"text", h:"unindexable max 1mb string.", aliases:[
+        {dn:"json", h:"JSON encoded data."},
+        {dn:"idcsv", h:"comma separated unique integer ids"},
+        {dn:"isodcsv", h:"comma separated ISO date values"},
+        {dn:"gencsv", h:"general comma separated values"},
+        {dn:"url", h:"a URL, possibly longer than 128chars"}]},
+    {dn:"image", h:"base64 encoded binary image data (max 1mb)"},
+    {dn:"dbid", h:"long int db id translated to string for JSON"},
+    {dn:"int", h:"low range integer value JavaScript can handle"}];
+</pre>
+
+YMMV.  This is just what works for me.  I've written that here as an illustration to show how field descriptions then allow me reasonably declare what I want to store, with comments.  For example, here's what my user entity looks like:
+
+<pre>
+{entity:"MUser", descr:"Membic User account.", fields:[
+    {f:"importid", d:"dbid unique", c:"previous id from import data"},
+    {f:"email", d:"priv req unique email"},
+    {f:"phash", d:"adm req string"},
+    {f:"status", d:"priv string", c:"Only Active may post",
+     enumvals:["Pending", "Active", "Inactive", "Unreachable"]},
+    {f:"mailbounce", d:"adm isodcsv", c:"latest bounce first"},
+    {f:"actsends", d:"adm gencsv", c:"latest first isod;emaddr vals"},
+    {f:"actcode", d:"adm string", c:"account activation code"},
+    {f:"altinmail", d:"priv unique email", c:"alt mail-in address"},
+    {f:"name", d:"string", c:"optional but recommended public name"},
+    {f:"aboutme", d:"text", c:"optional description, website link etc."},
+    {f:"hashtag", d:"unique string", c:"personal theme direct access"},
+    {f:"profpic", d:"image", c:"used for theme, and coop posts"},
+    {f:"cliset", d:"json", c:"dict of client settings, see note 1"},
+    {f:"themes", d:"json", c:"theme reference info, see note"},
+    {f:"lastwrite", d:"isod", c:"latest membic/preb rebuild"},
+    {f:"preb", d:"json", c:"membics for display w/opt overflow link"}],
+  logflds: ["email", "name"]},
+</pre>
+
+The <code>logflds</code> declares what fields to use for log messages.  There's also a <code>queries</code> field for things like my <code>Membic</code> entity, which requires indexes on multiple fields to support fast queries:
+
+<pre>
+  queries: [{q:[{f:"ctmid"}, {f:"modified", dir:"desc"}]},
+            {q:[{f:"ctmid"}, {f:"penid"}, {f:"modified", dir:"desc"}]}]},
+</pre>
+
+With these declarations in place, I have everything I need for a makeMySQLCRUD.js file that generates
+
+<ul>
+<li>A <code>createMySQLTables.sql</code> file to initialize my database.
+<li>A <code>dbacc.py</code> file for use server-side, with entity CRUD, reference caching, marshalling of field values from request parameters through to database and back via JSON with images fetched separately, appropriate logging and error handling.
+<li>A <code>refmgr.js</code> file for use client-side, with locally cached fetch, automatic serialization/deserialization, and full access to details about fields and entity definitions.
+</ul>
+
+Writing these files is not rocket science.  It's what you would expect.  Even more importantly, it's exactly what you need for your app, not for a general abstraction of an app that may or may not match your needs.  If you want to use my generator as a reference, it's at https://github.com/theriex/membic/blob/master/ref/port/makeMySQLCRUD.js
+
+The point here is this approach works and it's not even that hard.  It's cleaning a lot of crap out of my code as I move forward.  HTH.
+
+
