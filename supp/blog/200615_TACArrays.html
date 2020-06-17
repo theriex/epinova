@@ -1,0 +1,79 @@
+<!-- TAC Arrays, section managers -->
+
+While porting from Python 2.7 on Google App Engine to Python 3.7 on Dreamhost, I ended up touching a solid percentage of my front-end JavaScript code. The changes started from integrating the generated persistent object reference manager, but then I added some new features and did some general UX streamlining.  In the process, I revisited some of my general UI concepts, and figured I would write that up in case it might be useful to someone else.
+
+
+<h2>TAC Arrays</h2>
+
+A JavaScript web app needs to write HTML.  For me the most natural way is using Tag-Attributes-Content (TAC) arrays.  Here's a simple example:
+
+<pre>
+    var tac = ["div", {id:"maindiv"},
+               [["p", {id:"firstp"}, "First paragraph text"],
+                ["p", {id:"secondp"}, "Second paragrph text"]]];
+</pre>
+
+As you can see the <em>Tag</em> is an HTML tag name, the <em>Attributes</em> are an object, and the <em>Content</em> is a string or another TAC array.  A TAC array doesn't argue with JavaScript syntax very much, and it's straightforward to convert to HTML with a tac2html utility function.
+
+Unfortunately HTML attributes like "class" and "for" need to be quoted (or abbreviated) so they con't conflict with JavaScript reserved words, and hyphenated attributes like "data-state" will always have to be quoted.  Aside from those exceptions, most common attributes can be used directly, which saves unnecessary quoting.  Here's an example from the membic source showing various attributes:
+
+<pre>
+    return jt.tac2html(
+        ["div", {cla:"revtseldiv", id:"revtseldiv" + cdx,
+                 "data-state":"collapsed"},
+         typemgr.typesHTML(cdx, mt)]); },
+</pre>
+
+
+<h2>Connecting Events</h2>
+
+For HTML to do anything, it needs to react to events.  One way to do this is to write the HTML, then write code to connect events to it after it has rendered.  There are times when that makes sense, but there are many more times where it adds complexity without much benefit.  For simple cases, it is often clearer, and less error prone to write the HTML and the event connections directly in the TAC.  For example here's a typical "onclick":
+
+<pre>
+        ["a", {href:"#changetype", title:"Change Membic Type",
+               onclick:jt.fs("app.membic.typesel('" + mt.type + ")")},
+         typemgr.imgHTMLForType(cdx, mt)]);
+</pre>
+
+In terms of writing and connecting HTML, this approach is relatively clear and easy to manage.  The drawback is it requires exposing a "typesel" function in the public facing interface of the "membic" app module closure.  That's not inherently a problem, but it erodes the public facing interface in terms of module integration.  And the code to write the HTML is being separated from the code handling the click event.
+
+Code for UI subsection handling needs to be collected.  Degradation of the public facing module interface should be avoided.
+
+
+<h2>UI Section Managers</h2>
+
+A UI section manager is an object within a module, providing functions for writing HTML and reacting to events.  A section manager holds the code matching a logical section of the user interface.
+
+Static event handler connections in HTML can be routed back to the section manager through a single public dispatch method at the module level.  For example, something like this:
+
+<pre>
+    managerDispatch: function (mgrname, fname, ...args) {
+        switch(mgrname) {
+        case "mymgr": return mymgr[fname].apply(app.mymodule, args);
+        //other manager names here
+        default: jt.log("mymodule.managerDispatch no manager: " + mgrname); }
+    }
+</pre>
+
+Routing all static event handlers through a single method might make the "onclick" HTML a bit longer to type, but that can be easily factored into a utility function in the section manager.  For example
+
+<pre>
+    function dispatchstr (mgrf, argstr)
+        mgrf = mgrf.split(".");
+        return "app.mymodule.managerDispatch('" + mgrf[0] + "','" + mgrf[1];
+            "'," + argstr + ");return false;"
+    }
+</pre>
+
+Would then allow you to write a TAC array like
+
+<pre>
+        ["a", {href:"#changetype", title:"Change Membic Type",
+               onclick:dispatchstr("membic.typesel", "'" + mt.type + "'")},
+         typemgr.imgHTMLForType(cdx, mt)]);
+</pre>
+
+At the time of this writing, I've used this technique to factor out a theme posting manager, a detail fields manager, a link type manager, a rating manager, and a keyword manager.  Still liking the approach.
+
+Hope you find this technique helpful.
+
