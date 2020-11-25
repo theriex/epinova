@@ -1,8 +1,8 @@
 /*global jtminjsDecorateWithUtilities, document, setTimeout, window */
-/*jslint browser, multivar, white, fudge, for */
+/*jslint browser, white, fudge, for, long */
 
-var app = {},
-    jt = {};
+var app = {};
+var  jt = {};
 
 (function () {
     "use strict";
@@ -36,12 +36,12 @@ var app = {},
 
 
     function typeContactInfo () {
-        var ref, sub, ecs = ["&nbsp;", "&#8209;"], isesc = false, idx;
         if(typing.refidx < typing.refs.length) {
-            ref = typing.refs[typing.refidx];
+            var ref = typing.refs[typing.refidx];
             if(ref.text) {
-                idx = typing.charidx;  //shorthand
+                var idx = typing.charidx;  //shorthand
                 if(idx < ref.text.length) {
+                    var sub; var ecs=["&nbsp;", "&#8209;"]; var isesc=false;
                     ecs.forEach(function (es) {
                         if(ref.text.indexOf(es, idx) === idx) {
                             sub = ref.text.slice(0, idx + es.length);
@@ -77,40 +77,43 @@ var app = {},
 
 
     function displayContactInfo () {
-        var emaddr = "ericEMSEPepinova.com",
-            telno = "+1 617TELSEP721TELSEP4350",
-            inref = "https://www.linkedin.com/in/eparker",
-            //inico = "https://www.linkedin.com/favicon.ico",
-            //caching icon locally due to image loading issues on slower
-            //connections.  Not in repository, refetch if needed.
-            inico = "img/in.ico",
-            twref = "https://twitter.com/theriex",
-            twico = "img/twico.png",
-            gitref = "https://github.com/theriex",
-            gitico = "https://github.com/favicon.ico",
-            refs, html = [];
+        var emaddr = "ericEMSEPepinova.com";
+        var telno = "+1&nbsp;617TELSEP721TELSEP4350";
+        var inref = "https://www.linkedin.com/in/eparker";
+        //inico = "https://www.linkedin.com/favicon.ico",
+        //caching icon locally due to image loading issues on slower
+        //connections.  Not in repository, refetch if needed.
+        var inico = "img/in.ico";
+        var twref = "https://twitter.com/theriex";
+        var twico = "img/twico.png";
+        var gitref = "https://github.com/theriex";
+        var gitico = "https://github.com/favicon.ico";
+        var landref = "https://native-land.ca/maps/territories/massa-adchu-es-et-massachuset-2/";
         emaddr = emaddr.replace(/EMSEP/g, "@");
         telno = telno.replace(/TELSEP/g, "&#8209;");
-        refs = [{text: "Contact:"},
-                {text: emaddr,
-                 href: "mailto:" + emaddr},
-                {text: " "},  //space breaker
-                {text: telno,
-                 href: "tel:" + telno},
-                {text: " "},  //space breaker
-                {imgsrc: gitico,
-                 href: gitref,
-                 onclick: jt.fs("window.open('" + gitref + "')")},
-                {text: " "},  //space breaker
-                {imgsrc: inico,
-                 href: inref,
-                 onclick: jt.fs("window.open('" + inref + "')")},
-                {text: " "},  //space breaker
-                {imgsrc: twico,
-                 href: twref,
-                 onclick: jt.fs("window.open('" + twref + "')")},
-                {text: " "},  //space breaker
-                {text: "Boston,&nbsp;Massachusetts"}];
+        var refs = [{text: "Contact:"},
+                    {text: emaddr,
+                     href: "mailto:" + emaddr},
+                    {text: " "},  //space breaker
+                    {text: telno,
+                     href: "tel:" + telno},
+                    {text: " "},  //space breaker
+                    {imgsrc: gitico,
+                     href: gitref,
+                     onclick: jt.fs("window.open('" + gitref + "')")},
+                    {text: " "},  //space breaker
+                    {imgsrc: inico,
+                     href: inref,
+                     onclick: jt.fs("window.open('" + inref + "')")},
+                    {text: " "},  //space breaker
+                    {imgsrc: twico,
+                     href: twref,
+                     onclick: jt.fs("window.open('" + twref + "')")},
+                    {text: " "},  //space breaker
+                    {text: "South&nbsp;Boston,&nbsp;Massachusetts",
+                     href: landref,
+                     onclick: jt.fs("window.open('" + landref + "')")}];
+        var html = [];
         refs.forEach(function (ignore /*ref*/, index) {
             html.push(["span", {id: "dcrspan" + index, cla: "dcrspan"}]); });
         jt.out("contactdiv", jt.tac2html(html));
@@ -135,7 +138,7 @@ var app = {},
 
 
     function filterNodesByTag (nodes, tagname) {
-        var i, elems = [];
+        var i; var elems = [];
         for(i = 0; i < nodes.length; i += 1) {
             if(nodes[i].nodeName.toLowerCase() === tagname.toLowerCase()) {
                 elems.push(nodes[i]); } }
@@ -169,14 +172,14 @@ var app = {},
 
 
     function shouldOpenInNewTab (link) {
-        var nt, matches,
-            lms = ["#", "https://epinova.com", "https://www.membic.org",
+        var nt=false;
+        var lms = ["#", "https://epinova.com", "https://www.membic.org",
                    "http://epinova.com", "http://www.epinova.com",
                    "mailto"];
         if(link.className.indexOf("externaldocslink") >= 0) {
             nt = true; }
         if(!nt) {
-            matches = lms.filter(function (substr) {
+            var matches = lms.filter(function (substr) {
                 if(link.href.indexOf(substr) >= 0) {
                     return substr; } });
             nt = !(matches && matches.length); }
@@ -185,8 +188,8 @@ var app = {},
 
 
     function convertExternalLinks () {
-        var links, i, link;
-        links = document.getElementsByTagName("a");
+        var links = document.getElementsByTagName("a");
+        var i; var link;
         for(i = 0; i < links.length; i += 1) {
             link = links[i];
             if(shouldOpenInNewTab(link)) {
@@ -206,9 +209,8 @@ var app = {},
     ////////////////////////////////////////
 
     app.toggleDetails = function (index) {
-        var detdiv, morelink;
-        detdiv = jt.byId("pm" + index);
-        morelink = jt.byId("plink" + index);
+        var detdiv = jt.byId("pm" + index);
+        var morelink = jt.byId("plink" + index);
         if(detdiv.style.display === "block") {
             detdiv.style.display = "none";
             morelink.innerHTML = "more..."; }
