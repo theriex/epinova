@@ -1,0 +1,243 @@
+<!doctype html>
+<html itemscope="itemscope" itemtype="https://schema.org/WebPage"
+      xmlns="https://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="robots" content="noodp" />
+  <meta name="description" content="How contextual music retrieval works, and notes on keywords from personal experience." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contextual Music Retrieval</title>
+<style type="text/css">
+body { background:#ccc; }
+.kwdefdiv { padding:3px; }
+.kwnamespan { font-size:large; font-weight:bold; margin-right:5px; 
+  display:inline-block; width:100px; text-align:right; }
+.kwstatspan { font-size:small; font-style:italic;
+  display:inline-block; width:60px; margin:0px 5px; }
+#kwsdiv { margin:10px; }
+.opspan { color:#666; font-size:small; margin:0px 5px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<h1>Contextual Music Retrieval</h1>
+
+It <em>is</em> possible to automatically play a continuous selection of
+music appropriate for your current listening context.  To make it work, your
+songs need be categorized for retrieval based on when you listen to them.
+If music is important to you, going back through your library to tag tracks
+is probably worth it, since the goal is to make your library easier to
+access, and if you are reading this, then clearly that could be improved.
+While a full prowl back through the stacks can be enjoyable, it's a
+substantial time investment, so it's best if you can get things set up
+properly in the first pass.  I didn't, but after several passes, contextual
+retrieval is finally starting to work pretty well, so I thought I would
+write down what I've learned about what works and what doesn't.
+
+<span id="intro", class="morecontent">
+
+<h2>Contextual retrieval keywords</h2>
+
+<p>Figuring out keywords for contextual retrieval is one of those things
+that is simple to get started on, and hard to finish well.  To start,
+identify situations when you commonly listen to music.  Your typical day,
+your typical week.  Write those down.  Next, think about your occasional
+situations, like having friends over or whatever else you do.  Write those
+down also. </p>
+
+<p>Now factor those contexts into as few keywords as possible so you don't
+have too many tags to fill out for each track, but you can still pull
+appropriate music for your listening situations. </p>
+
+<p>When factoring, consider what varies based on general criteria like
+energy level or approachability.  I've found that for music I've tagged as
+"social", the difference between a quiet dinner and a larger party later is
+mostly energy level, with a little more edgy stuff later (I use 
+<a href="https://github.com/theriex/digger">digger</a> to contextually pull
+music from my library for listening).</p>
+
+<p>The rest of this doc is notes about various keywords.  Hopefully you'll
+find it helpful. </p>
+
+</span>
+
+<div id="kwsdiv">
+</div>
+
+<script src="../js/jtmin.js"></script>
+<script>
+
+var jt = {};
+jtminjsDecorateWithUtilities(jt);
+
+var stats = ["Useful", "Secondary", "Obviated", "Rejected"];
+var kds = [
+    {kw:"Social", stat:"Useful", desc:`Any song I feel comfortable playing
+when other people besides me are listening.  This does not mean pop, it just
+means that I'm comfortable playing it with company, and I'm comfortable
+entering into conversations ranging from "That's fantastic" to "What is this
+shit".  I can dial in the approachability, energy level, and minimum rating
+to fit the people I'm with.`},
+
+    {kw:"Personal", stat:"Useful", desc:`Any song that has meaning for me
+personally.  Frequently these are from earlier in my life.  Many times the
+artist and I have since parted ways.  Sometimes an artist doing things that
+make me unwilling to promote them, sometimes it's just from a different
+time, or hard to listen in company.  This keyword is extremely handy because
+the vast majority of my songs are either going to be tagged with at least
+"Social" or "Personal".  There are some exceptions, like music I'm currently
+actively studying, but this provides a lot of leverage for accessing my
+collection when I'm listening just for me.`},
+
+    {kw:"Office", stat:"Useful", desc:`Any song I can listen to while I'm
+coding, writing docs like this, or otherwise working with headphones on
+things that require attention.  For me, many songs with lyrics are more
+distracting than I want, but that leaves a lot of music that helps me stay
+in the zone.`},
+
+    {kw:"Work", stat:"Rejected", desc:`This is too vague to be effective
+when tagging my music.  Constantly halted by what it actually means.  Is
+this office or job site?  Does cooking count?  Seems like a nice general
+keyword but not worth it.`},
+
+    {kw:"Cooking", stat:"Rejected", desc:`Definitely a situation where I
+want music playing, but it's actually a pretty broad range already well
+served by the social and personal keywords.  Not worth a separate keyword
+for this situation.`},
+
+    {kw:"Phone", stat:"Rejected", desc:`Had this idea that I would tag
+generally great music that was widely available for all times when there was
+a bluetooth speaker around and I wanted some music.  Didn't really work, and
+it was impossible to determine while I was tagging songs.`},
+
+    {kw:"Brunch", stat:"Obviated", desc:`Definitely a situation when I want
+music without having to think about it, but essentially equivalent to "Social"
+with a relatively subdued energy level and easy to mid approachability.`},
+
+    {kw:"Party", stat:"Obviated", desc:`Seemed obvious, but turns out it is
+essentially equivalent to selecting for "Social" with an upbeat energy level
+and reasonable approachability.`},
+
+    {kw:"Dance", stat:"Useful", desc:`Whether you think something is a great
+dance track is pretty individual.  And it's not all high energy.  The only 
+reliable way to access your best dance music is to tag it.  For me it's 
+also worth having this in my default keywords so I remember to click it when
+a great dance track starts playing.`},
+
+    {kw:"Ambient", stat:"Useful", desc:`This tag is very helpful tag for me
+because I'm picky about what qualifies as ambient.  For me, quality
+ambient music can be listened to at multiple levels, ranging from near zero
+attention to occasional full attention, without being boring or intrusive.
+Ambient music can transition from silence and back to silence smoothly.
+It's rare art, and worthy of a tag for those times when I want the
+space I'm in to function like a sound installation.`},
+
+    {kw:"Listening", stat:"Rejected", desc:`This tag was for those
+situations when I'm just listening to music and not doing anything else.  My
+attention is on the music.  It's definitely a listening context, and I
+thought it might be a time when I listen to those really challenging tracks.
+In practice, it didn't happen that way at all.  For starters, I can peg the
+the approachability filter way over anytime I want.  For seconds, it's
+actually really wide what I choose in these situations.  Thirdly, I'm
+frequently ok taking the time to think about what I want to listen to and
+perusing my library. I don't need automatic retrieval in this case, and it
+doesn't work as a tag.`},
+
+    {kw:"Studying", stat:"Rejected", desc:`This one was just a bad name.
+Kept forgetting if it meant that I was studying the song (like learning to
+play it or analyzing it for composition), or if I was studying something
+else and listening to music while I was doing that.  In the latter case it
+was basically the same as "Office".  In the first case I needed something
+that was glaringly obvious that's what the purpose was.  I went with
+"CompNote" because even if I'm studying tablature or melody or whatever
+besides composition, it was still easy to click the category.`},
+
+    {kw:"Learn", stat:"Rejected", desc:`Didn't like using this because it
+only felt applicable to things I was studying to be able to play.  Sometimes
+it was only part of the song, or one aspect of it, that was the reason I
+wanted it on speed dial retrieval.  The "CompNote" tag was easier to
+recognize while I was tagging, and I try to remember to write what was
+notable about it in the general comment for the song.`},
+
+    {kw:"CompNote", stat:"Secondary", desc:`Short for "compositionally
+notable", this is a distinct tag for noting songs with basslines I should
+learn, rhythmic composition techniques I should make use of, harmonic
+combinations that are really inventive, interesting chord progressions,
+overall compositional techniques and any other things that make a song
+worthy of looping multiple times in a row while I study what is going on
+and why it works so well.`},
+
+    {kw:"Classical", stat:"Secondary", desc:`This is a genre tag that works
+well for me because there are times when I'm just not in the mood, and 
+occasionally I want to pull only this kind of music.  Normally I'm fine
+with classical tracks getting mixed in with everything else, so this doesn't
+get that much use, but it is easy to tag while listening, and can be
+helpful.`},
+
+    {kw:"Jazz", stat:"Secondary", desc:`This is a crossover mood/genre tag that
+is relatively easy to click while I'm listening, and helpful for those times 
+when I want to focus on this part of my library.  I'm not worried about
+properly tagging all my jazz music, but I try to hit the ones I want most.`},
+
+    {kw:"Morning", stat:"Obviated", desc:`Definitely a time when I listen to
+music, but not an easy tag to determine while just listening to a track.
+Turns out that "Office" with a lower energy level and easy to mid
+approachability usually does it for me for those times when I was thinking
+this keyword would be useful.`},
+
+    {kw:"Solstice", stat:"Secondary", desc:`Other people might call this
+holiday music. For me there's a few tracks that I consistently want to hear
+around this time of year, so I try and mark them when I find them.`},
+
+    {kw:"Talk", stat:"Secondary", desc:`I use this for longer spoken word
+things that don't really function as music when interjected into a stream of
+automatic song retrieval.  In some situations they're ok to include, other
+times not.  Many tracks with spoken word work fine with automatic retrieval
+since they are filtered appropriately based on the attention required.`},
+
+    {kw:"Workout", stat:"Obviated", desc:`Definitely a situation where I
+listen to music, easily accomplished by filtering for a higher energy level.
+Not worth a separate keyword.`},
+
+    {kw:"Travel", stat:"Rejected", desc:`This is definitely a situation when
+I want music playing, but it includes just about everything I generally
+listen to.  Selecting negatively for "Office" works pretty well.`},
+
+    {kw:"Commute", stat:"Rejected", desc:`Definitely a situation where I
+want music playing, but it's too wide a category to be a reasonable tag.  It
+helps to pull what I haven't listened to in the longest time.`},
+]
+
+
+kds.sort(function (a, b) {
+    return stats.indexOf(a.stat) - stats.indexOf(b.stat); });
+jt.out("kwsdiv", jt.tac2html(kds.map((kd) =>
+    ["div", {cla:"kwdefdiv"},
+     [["span", {cla:"kwnamespan"}, kd.kw],
+      ["span", {cla:"kwstatspan"}, "(" + kd.stat + ")"],
+      ["span", {id:kd.kw, cla:"morecontent"}, kd.desc]]])));
+Array.prototype.forEach.call(document.getElementsByClassName("morecontent"), function (div) {
+    var html = div.innerHTML;
+    div.innerHTML = jt.tac2html(
+        [["span", {id:div.id + "openspan", cla:"opspan",
+                   style:"display:initial;",
+                   onclick:jt.fs("moredivToggle('open','" + div.id + "')")},
+          "details..."],
+         ["div", {id:div.id + "content", style:"display:none;"},
+          [html,
+           ["span", {id:div.id + "closespan", cla:"opspan",
+                     onclick:jt.fs("moredivToggle('close','" + div.id + "')")},
+            " [less]"]]]]); });
+function moredivToggle(state, id) {
+    if(state === "open") {
+        jt.byId(id + "openspan").style.display = "none";
+        jt.byId(id + "content").style.display = "initial"; }
+    else {  //close
+        jt.byId(id + "openspan").style.display = "initial";
+        jt.byId(id + "content").style.display = "none"; }
+}
+
+</script>
+</body>
+</html>
+
