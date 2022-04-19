@@ -78,7 +78,7 @@ var  jt = {};
 
     function displayContactInfo () {
         var emaddr = "ericEMSEPepinova.com";
-        var telno = "+1&nbsp;617TELSEP721TELSEP4350";
+        var telno = "+1&nbsp;617TELSEP237TELSEP0513";
         var inref = "https://www.linkedin.com/in/eparker";
         //inico = "https://www.linkedin.com/favicon.ico",
         //caching icon locally due to image loading issues on slower
