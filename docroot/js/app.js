@@ -84,7 +84,7 @@ var  jt = {};
         //caching icon locally due to image loading issues on slower
         //connections.  Not in repository, refetch if needed.
         var inico = "img/in.ico";
-        var twref = "https://twitter.com/theriex";
+        // var twref = "https://twitter.com/theriex";
         var twico = "img/twico.png";
         var gitref = "https://github.com/theriex";
         var gitico = "https://github.com/favicon.ico";
@@ -106,10 +106,10 @@ var  jt = {};
                      href: inref,
                      onclick: jt.fs("window.open('" + inref + "')")},
                     {text: " "},  //space breaker
-                    {imgsrc: twico,
-                     href: twref,
-                     onclick: jt.fs("window.open('" + twref + "')")},
-                    {text: " "},  //space breaker
+                    // {imgsrc: twico,
+                    //  href: twref,
+                    //  onclick: jt.fs("window.open('" + twref + "')")},
+                    // {text: " "},  //space breaker
                     {text: "South&nbsp;Boston,&nbsp;Massachusetts",
                      href: landref,
                      onclick: jt.fs("window.open('" + landref + "')")}];
