@@ -1,5 +1,5 @@
 /*global jtminjsDecorateWithUtilities, document, setTimeout, window */
-/*jslint browser, white, fudge, for, long */
+/*jslint browser, white, unordered, long, for */
 
 var app = {};
 var  jt = {};
@@ -36,12 +36,13 @@ var  jt = {};
 
 
     function typeContactInfo () {
+        var sub; var isesc=false;
         if(typing.refidx < typing.refs.length) {
-            var ref = typing.refs[typing.refidx];
+            const ref = typing.refs[typing.refidx];
             if(ref.text) {
-                var idx = typing.charidx;  //shorthand
+                const idx = typing.charidx;  //shorthand
                 if(idx < ref.text.length) {
-                    var sub; var ecs=["&nbsp;", "&#8209;"]; var isesc=false;
+                    const ecs=["&nbsp;", "&#8209;"];
                     ecs.forEach(function (es) {
                         if(ref.text.indexOf(es, idx) === idx) {
                             sub = ref.text.slice(0, idx + es.length);
@@ -85,35 +86,35 @@ var  jt = {};
         //connections.  Not in repository, refetch if needed.
         var inico = "img/in.ico";
         // var twref = "https://twitter.com/theriex";
-        var twico = "img/twico.png";
+        // var twico = "img/twico.png";
         var gitref = "https://github.com/theriex";
         var gitico = "https://github.com/favicon.ico";
         var landref = "https://native-land.ca/maps/territories/massa-adchu-es-et-massachuset-2/";
         emaddr = emaddr.replace(/EMSEP/g, "@");
         telno = telno.replace(/TELSEP/g, "&#8209;");
-        var refs = [{text: "Contact:"},
-                    {text: emaddr,
-                     href: "mailto:" + emaddr},
-                    {text: " "},  //space breaker
-                    {text: telno,
-                     href: "tel:" + telno},
-                    {text: " "},  //space breaker
-                    {imgsrc: gitico,
-                     href: gitref,
-                     onclick: jt.fs("window.open('" + gitref + "')")},
-                    {text: " "},  //space breaker
-                    {imgsrc: inico,
-                     href: inref,
-                     onclick: jt.fs("window.open('" + inref + "')")},
-                    {text: " "},  //space breaker
-                    // {imgsrc: twico,
-                    //  href: twref,
-                    //  onclick: jt.fs("window.open('" + twref + "')")},
-                    // {text: " "},  //space breaker
-                    {text: "South&nbsp;Boston,&nbsp;Massachusetts",
-                     href: landref,
-                     onclick: jt.fs("window.open('" + landref + "')")}];
-        var html = [];
+        const refs = [{text: "Contact:"},
+                      {text: emaddr,
+                       href: "mailto:" + emaddr},
+                      {text: " "},  //space breaker
+                      {text: telno,
+                       href: "tel:" + telno},
+                      {text: " "},  //space breaker
+                      {imgsrc: gitico,
+                       href: gitref,
+                       onclick: jt.fs("window.open('" + gitref + "')")},
+                      {text: " "},  //space breaker
+                      {imgsrc: inico,
+                       href: inref,
+                       onclick: jt.fs("window.open('" + inref + "')")},
+                      {text: " "},  //space breaker
+                      // {imgsrc: twico,
+                      //  href: twref,
+                      //  onclick: jt.fs("window.open('" + twref + "')")},
+                      // {text: " "},  //space breaker
+                      {text: "South&nbsp;Boston,&nbsp;Massachusetts",
+                       href: landref,
+                       onclick: jt.fs("window.open('" + landref + "')")}];
+        const html = [];
         refs.forEach(function (ignore /*ref*/, index) {
             html.push(["span", {id: "dcrspan" + index, cla: "dcrspan"}]); });
         jt.out("contactdiv", jt.tac2html(html));
@@ -179,7 +180,7 @@ var  jt = {};
         if(link.className.indexOf("externaldocslink") >= 0) {
             nt = true; }
         if(!nt) {
-            var matches = lms.filter(function (substr) {
+            const matches = lms.filter(function (substr) {
                 if(link.href.indexOf(substr) >= 0) {
                     return substr; } });
             nt = !(matches && matches.length); }
@@ -226,7 +227,7 @@ var  jt = {};
                    {divid:"biodiv", name:"Bio"}];
         var sep = "&nbsp;&nbsp;&nbsp;&nbsp;";
         sep = sep + "|" + sep;
-        var html = [];
+        const html = [];
         pgs.forEach(function (pg, idx) {
             if(pg.divid !== divid) {
                 jt.byId(pg.divid).style.display = "none";
@@ -244,9 +245,10 @@ var  jt = {};
 
 
     app.externalLinkClick = function (event) {
-        var src;
+        var src = event.target;
         jt.evtend(event);
-        src = event.target || event.srcElement;
+        if(src.tagName.toLowerCase() === "img") {
+            src = src.parentElement; }
         if(src) {
             window.open(src.href); }
     };
@@ -257,7 +259,7 @@ var  jt = {};
         addExpansionLinks();
         addFontSupport();
         convertExternalLinks();
-        var params = jt.parseParams();
+        const params = jt.parseParams();
         if(params.view === "news") {
             app.selectContent("newsdiv"); }
         else {
