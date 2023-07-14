@@ -11,7 +11,7 @@ var  jt = {};
     // local variables
     ////////////////////////////////////////
 
-    var typing = { refidx: 0, charidx: 0 };
+    var typing = { refidx:0, charidx:0, tms:100 };
 
 
     ////////////////////////////////////////
@@ -26,100 +26,69 @@ var  jt = {};
     }
 
 
-    function displayContactLink (disp) {
-        var ref = typing.refs[typing.refidx];
-        if(ref.href) {
-            disp = ["a", {href: ref.href, onclick: ref.onclick},
-                    disp]; }
-        jt.out("dcrspan" + typing.refidx, jt.tac2html(disp));
+    function typeContactInfo () {
+        if(typing.refidx < typing.refs.length) {
+            const ref = typing.refs[typing.refidx];
+            if(ref.type !== "dyntxt" || (ref.href.length &&
+                                         ref.href.length < ref.di)) {
+                typing.refidx += 1; }
+            else {  //dyntxt with output needed
+                ref.di = ref.di || 0;
+                ref.text = ref.text || "";
+                ref.text += ref.href.slice(ref.di, ref.di + 1);
+                if(ref.text.endsWith(" ")) {
+                    ref.text = ref.text.slice(0, ref.text.length - 1);
+                    ref.text += "&nbsp;"; }
+                jt.out("dcrhref" + typing.refidx, ref.text);
+                ref.di += 1; }
+            setTimeout(typeContactInfo, typing.tms); }
+        else {
+            displayResumeLink(); }
     }
 
 
-    function typeContactInfo () {
-        var sub; var isesc=false;
-        if(typing.refidx < typing.refs.length) {
-            const ref = typing.refs[typing.refidx];
-            if(ref.text) {
-                const idx = typing.charidx;  //shorthand
-                if(idx < ref.text.length) {
-                    const ecs=["&nbsp;", "&#8209;"];
-                    ecs.forEach(function (es) {
-                        if(ref.text.indexOf(es, idx) === idx) {
-                            sub = ref.text.slice(0, idx + es.length);
-                            typing.charidx += es.length;
-                            isesc = true; } });
-                    if(!isesc) {
-                        sub = ref.text.slice(0, idx);
-                        typing.charidx += 1; }
-                    displayContactLink(sub); }
-                else {
-                    displayContactLink(ref.text);
-                    typing.refidx += 1;
-                    typing.charidx = 0; } }
-            else if(ref.imgsrc) {
-                displayContactLink(jt.tac2html(
-                    ["img", {src: ref.imgsrc, cla: "refimg"}]));
-                typing.refidx += 1;
-                typing.charidx = 0; }
-            setTimeout(typeContactInfo, 100); }
-        else {
-            displayResumeLink(); }
-        //redrawing the img doesn't cause the broken image to reload.  Caching
-        //locally instead.
-        // else {  //last call
-        //     //redisplay images since the linkedin is particularly laggy and
-        //     //can show up broken
-        //     typing.refs.forEach(function (r, i) {
-        //         if(r.imgsrc) {
-        //             typing.refidx = i;
-        //             displayContactLink(jt.tac2html(
-        //                 ["img", {src: r.imgsrc, cla: "refimg"}])); } }); }
+    function contactHTML (rdef, idx) {
+        var ac; var sa; var aa;
+        ac = rdef.text || "";
+        if(rdef.type === "extimg") {
+            ac = jt.tac2html(["img", {src:rdef.imgsrc}]); }
+        sa = {id:"dcrspan" + idx, cla:"dcrspan"};
+        if(rdef.type === "dyntxt") {
+            sa.style = "min-width:" + (0.6 * rdef.href.length) + "em"; }
+        aa = {id:"dcrhref" + idx, href:rdef.hpre + rdef.href};
+        if(rdef.type !== "dyntxt") {
+            aa.onclick = "window.open('" + rdef.href + "');return false;"; }
+        rdef.hpre = rdef.hpre || "";
+        return jt.tac2html(
+            ["span", sa,
+             ["a", aa, ac]]);
     }
 
 
     function displayContactInfo () {
-        var emaddr = "ericEMSEPepinova.com";
-        var telno = "+1&nbsp;617TELSEP237TELSEP0513";
-        var inref = "https://www.linkedin.com/in/eparker";
-        //inico = "https://www.linkedin.com/favicon.ico",
-        //caching icon locally due to image loading issues on slower
-        //connections.  Not in repository, refetch if needed.
-        var inico = "img/in.ico";
-        // var twref = "https://twitter.com/theriex";
-        // var twico = "img/twico.png";
-        var gitref = "https://github.com/theriex";
-        var gitico = "https://github.com/favicon.ico";
-        var landref = "https://native-land.ca/maps/territories/massa-adchu-es-et-massachuset-2/";
-        emaddr = emaddr.replace(/EMSEP/g, "@");
-        telno = telno.replace(/TELSEP/g, "&#8209;");
-        const refs = [{text: "Contact:"},
-                      {text: emaddr,
-                       href: "mailto:" + emaddr},
-                      {text: " "},  //space breaker
-                      {text: telno,
-                       href: "tel:" + telno},
-                      {text: " "},  //space breaker
-                      {imgsrc: gitico,
-                       href: gitref,
-                       onclick: jt.fs("window.open('" + gitref + "')")},
-                      {text: " "},  //space breaker
-                      {imgsrc: inico,
-                       href: inref,
-                       onclick: jt.fs("window.open('" + inref + "')")},
-                      {text: " "},  //space breaker
-                      // {imgsrc: twico,
-                      //  href: twref,
-                      //  onclick: jt.fs("window.open('" + twref + "')")},
-                      // {text: " "},  //space breaker
-                      {text: "South&nbsp;Boston,&nbsp;Massachusetts",
-                       href: landref,
-                       onclick: jt.fs("window.open('" + landref + "')")}];
-        const html = [];
-        refs.forEach(function (ignore /*ref*/, index) {
-            html.push(["span", {id: "dcrspan" + index, cla: "dcrspan"}]); });
-        jt.out("contactdiv", jt.tac2html(html));
+        const refs = [
+            {type:"dyntxt", hrpre:"mailto:", href:"$EMNAME@$HOSTNAME"},
+            {type:"dyntxt", hrpre:"tel:", href:"+1 $GAC-237-0513"},
+            {type:"extimg", //imgsrc:"https://github.com/favicon.ico",
+             imgsrc:"img/github.ico", href:"https://github.com/theriex"},
+            //cached local icon to avoid unnecessary service call.
+            //Not in repository, refetch as needed.
+            {type:"extimg", //imgsrc:"https://www.linkedin.com/favicon.ico",
+             imgsrc:"img/in.ico", href:"https://www.linkedin.com/in/eparker"},
+            // {type:"extimg", imgsrc:"img/twico.png",
+            //  href:"https://twitter.com/theriex"},
+            //site favicon currently missing, using local version
+            {type:"extimg", imgsrc:"img/medico.png",
+             href:"https://medium.com/@eric_89483"},
+            {type:"exttxt", text:"South Boston, Massachusetts",
+             href:"https://native-land.ca/maps/territories/massa-adchu-es-et-massachuset-2/"}];
+        refs[0].href = refs[0].href.replace("$EMNAME", "eric");
+        refs[0].href = refs[0].href.replace("$HOSTNAME", "epinova.com");
+        refs[1].href = refs[1].href.replace("$GAC", "617");
+        jt.out("contactdiv", jt.tac2html(
+            refs.map((r, i) => contactHTML(r, i))));
         typing.refs = refs;
-        setTimeout(typeContactInfo, 100);
+        setTimeout(typeContactInfo, typing.tms);
     }
 
 

@@ -48,7 +48,7 @@ A:hover {text-decoration:underline; color:#00989a; }
 .pm { font-size:medium; display:none; 
       background-image: url('../img/wt30p.png'); }
 .morelink { font-size:small; background-image: url('../img/wt30p.png'); }
-#actinformdiv { font-style:italic; font-size:medium; }
+#actinformdiv { font-style:italic; font-size:large; padding-bottom:20px; }
 #actinformdiv p { margin:5px 0px; }
 #actinformdiv p a { line-height:2.5em; padding-left:12px; }
 #actinformdiv p a img { max-height:3em; vertical-align:middle; 
@@ -57,10 +57,11 @@ button { border: 2px solid #007274; border-radius:10px;
   cursor:pointer; background:#c0f1f2; box-shadow:1px 1px 1px #2f2b00;
   font-size:x-small; font-weight:bold; margin-left:20px; }
 
-.dcrspan { padding:0px 5px; vertical-align:middle; }
+.dcrspan { display:inline-block; padding:0px 5px; vertical-align:middle;
+  margin-right:12px; }
 .dcrspan a { line-height:2.2em; }
+.dcrspan a img { max-height:20px; vertical-align:middle; }
 #dcorgspan { font-size:medium; }
-.refimg { max-height:20px; max-width:20px; vertical-align:middle; }
 
 #newsdiv { margin-left:-12px; }
 #biopic { float:left; max-width:180px; margin-right:10px; }
