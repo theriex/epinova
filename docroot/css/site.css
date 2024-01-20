@@ -67,12 +67,14 @@ button { border: 2px solid #007274; border-radius:10px;
 #biopic { float:left; max-width:180px; margin-right:10px; }
 #reslinkdiv { font-size:small; font-style:italic; }
 
+#projectsdiv { margin:0px auto 0px 16%; }
 .projdescrdiv { display:inline-block; padding:12px; border-radius:16px;
-  min-height:100px; vertical-align:top; position:relative; margin:0px 8px;
+  min-height:100px; vertical-align:top; position:relative; margin:4px 8px;
   background-image: url('../img/wt30p.png'); }
 .projdescrdiv div { position:absolute; left:0px; bottom:8px;
   width:100%; text-align:center;
   font-style:normal; font-size:small; font-weight:bold; }
 .imgntxtlink { white-space:nowrap; }
 .imgntxtlink img { vertical-align:middle; max-width:80px; }
-#extlinksdiv { position:absolute; left:20px; bottom:10px; font-size:small; }
+#extlinksdiv { font-size:small; margin-top:32px; }
+#extlinksdiv a { white-space:nowrap; }

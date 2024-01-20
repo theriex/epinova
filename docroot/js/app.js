@@ -69,17 +69,16 @@ var  jt = {};
         const refs = [
             {type:"dyntxt", hrpre:"mailto:", href:"$EMNAME@$HOSTNAME"},
             {type:"dyntxt", hrpre:"tel:", href:"+1 $GAC-237-0513"},
-            {type:"extimg", //imgsrc:"https://github.com/favicon.ico",
-             imgsrc:"img/github.ico", href:"https://github.com/theriex"},
-            //cached local icon to avoid unnecessary service call.
-            //Not in repository, refetch as needed.
-            {type:"extimg", //imgsrc:"https://www.linkedin.com/favicon.ico",
-             imgsrc:"img/in.ico", href:"https://www.linkedin.com/in/eparker"},
-            // {type:"extimg", imgsrc:"img/twico.png",
-            //  href:"https://twitter.com/theriex"},
-            //site favicon currently missing, using local version
             {type:"extimg", imgsrc:"img/medico.png",
              href:"https://medium.com/@eric_89483"},
+            {type:"extimg", imgsrc:"img/inico.png",
+             href:"https://www.linkedin.com/in/eparker"},
+            {type:"extimg", imgsrc:"img/redico.png",
+             href:"https://www.reddit.com/user/theriex"},
+            {type:"extimg", imgsrc:"img/github.ico",
+             href:"https://github.com/theriex"},
+            // {type:"extimg", imgsrc:"img/twico.png",
+            //  href:"https://twitter.com/theriex"},
             {type:"exttxt", text:"South Boston, Massachusetts",
              href:"https://native-land.ca/maps/territories/massa-adchu-es-et-massachuset-2/"}];
         refs[0].href = refs[0].href.replace("$EMNAME", "eric");
