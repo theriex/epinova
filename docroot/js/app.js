@@ -55,10 +55,9 @@ var  jt = {};
         sa = {id:"dcrspan" + idx, cla:"dcrspan"};
         if(rdef.type === "dyntxt") {
             sa.style = "min-width:" + (0.6 * rdef.href.length) + "em"; }
-        aa = {id:"dcrhref" + idx, href:rdef.hpre + rdef.href};
+        aa = {id:"dcrhref" + idx, href:rdef.href};
         if(rdef.type !== "dyntxt") {
             aa.onclick = "window.open('" + rdef.href + "');return false;"; }
-        rdef.hpre = rdef.hpre || "";
         return jt.tac2html(
             ["span", sa,
              ["a", aa, ac]]);
