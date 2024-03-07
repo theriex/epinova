@@ -165,10 +165,11 @@ var  jt = {};
     }
 
 
-    function adjustNewsHeight () {
+    function adjustFrameDivHeights () {
         var h = jt.byId("contentdiv").offsetHeight;
         h -= jt.byId("logodiv").offsetHeight;
         jt.byId("newsdiv").style.height = String(h) + "px";
+        jt.byId("digdiv").style.height = String(h) + "px";
     }
 
 
@@ -190,6 +191,7 @@ var  jt = {};
 
     app.selectContent = function (divid) {
         var pgs = [{divid:"capdiv", name:"About"},
+                   {divid:"digdiv", name:"Listening"},
                    {divid:"newsdiv", name:"Reading"},
                    {divid:"biodiv", name:"Bio"}];
         var sep = "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -232,7 +234,7 @@ var  jt = {};
         else {
             app.selectContent("capdiv"); }
         displayContactInfo();
-        adjustNewsHeight();
+        adjustFrameDivHeights();
     };
 
 } () );
