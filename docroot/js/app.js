@@ -72,6 +72,8 @@ var  jt = {};
              href:"https://medium.com/@eric_89483"},
             {type:"extimg", imgsrc:"img/inico.png",
              href:"https://www.linkedin.com/in/eparker"},
+            {type:"extimg", imgsrc:"img/mastodon.svg",
+             href:"https://mastodon.social/@theriex"},
             {type:"extimg", imgsrc:"img/redico.png",
              href:"https://www.reddit.com/user/theriex"},
             {type:"extimg", imgsrc:"img/github.ico",
