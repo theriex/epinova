@@ -1,0 +1,18 @@
+[A Serial is a series of articles joined by an overview]
+
+Framing statement: Without data about what you personally think of a
+song, you won't be able to find it later based on what you are in the mood
+for.  You'll have to search your collection every time you want to hear
+something beyond your immediate retrieval memory.
+
+This is a data encoding and retrieval problem.  It can be solved in software.
+
+Continuous variables...
+
+So what would be the fastest, most efficient personal annotation a player
+can record and use for personal relevant autoplay/autofetch?  Can this be
+made to work?  Will it work well?  Is it even possible?
+
+Successive refinement of the issues and full derivation and reframing
+
+
